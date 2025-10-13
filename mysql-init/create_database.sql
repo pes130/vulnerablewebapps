@@ -1,0 +1,13 @@
+-- create_databases.sql
+CREATE DATABASE IF NOT EXISTS dvwa CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS dvna CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS mutillidae CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE USER IF NOT EXISTS 'dvwa'@'%' IDENTIFIED BY 'dvwa';
+CREATE USER IF NOT EXISTS 'dvna'@'%' IDENTIFIED BY 'dvna';
+CREATE USER IF NOT EXISTS 'mutillidae'@'%' IDENTIFIED BY 'mutillidae';
+
+GRANT ALL PRIVILEGES ON dvwa.* TO 'dvwa'@'%';
+GRANT ALL PRIVILEGES ON dvna.* TO 'dvna'@'%';
+GRANT ALL PRIVILEGES ON mutillidae.* TO 'mutillidae'@'%';
+FLUSH PRIVILEGES;

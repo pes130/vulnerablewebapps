@@ -1,0 +1,93 @@
+version: "3.8"
+services:
+  dvwa:
+    build: ./dvwa
+    depends_on:
+      - dvwa_db
+    ports:
+      - "8081:80"
+    environment:
+      - MYSQL_HOST=dvwa_db
+      - MYSQL_USER=dvwa
+      - MYSQL_PASSWORD=dvwa
+      - MYSQL_DATABASE=dvwa
+    volumes:
+      - ./dvwa/config/config.inc.php:/var/www/html/config/config.inc.php:ro
+    networks:
+      - labnet
+
+  dvwa_db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: dvwa
+      MYSQL_USER: dvwa
+      MYSQL_PASSWORD: dvwa
+    volumes:
+      - dvwa_db_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - labnet
+
+  juice:
+    image: bkimminich/juice-shop:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - labnet
+
+  mutillidae:
+    image: webpwnized/mutillidae:www-2.12.5
+    environment:
+      DATABASE_HOST: dvwa_db
+      DATABASE_USERNAME: mutillidae
+      DATABASE_PASSWORD: mutillidae
+      DATABASE_NAME: mutillidae
+      DATABASE_PORT: "3306"
+    volumes:
+      - ./mutillidae/config/database-config.inc:/var/www/mutillidae/includes/database-config.inc:ro
+    ports:
+      - "8082:80"
+    networks:
+      - labnet
+
+  hackazon:
+    image: pierrickv/hackazon:latest
+    ports:
+      - "8083:80"
+    networks:
+      - labnet
+
+  webgoat:
+    image: webgoat/webgoat:latest
+    ports:
+      - "8084:8080"
+    networks:
+      - labnet
+
+  dvna:
+    image: appsecco/dvna:sqlite
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    ports:
+      - "8085:3000"
+    networks:
+      - labnet
+
+  bridge:
+    build: ./bridge
+    environment:
+      - FLAG_FILE=/host_flags/flag.txt
+      - SECRET_TOKEN=6f2b9d3e8a7c1f4b5e6d2a9c3b7f8e1d
+    volumes:
+      - ./host_flags:/host_flags:ro
+    networks:
+      - labnet
+
+volumes:
+  dvwa_db_data:
+
+networks:
+  labnet:
+    driver: bridge
