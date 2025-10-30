@@ -53,7 +53,9 @@ services:
 #      - no-new-privileges:true
 
   mutillidae:
-    image: webpwnized/mutillidae:www-2.12.5
+    build: ./mutillidae
+    depends_on:
+      - dvwa_db
     environment:
       DATABASE_HOST: dvwa_db
       DATABASE_USERNAME: mutillidae
