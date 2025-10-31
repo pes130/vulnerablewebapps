@@ -5,11 +5,11 @@ set -e
 mkdir -p /var/log/apache2
 touch /var/log/apache2/mutillidae-access.log /var/log/apache2/mutillidae-error.log
 
-if [ ! -L "/var/log/apache2/access.log" ]; then
+if [ ! -e "/var/log/apache2/access.log" ]; then
   ln -s /var/log/apache2/mutillidae-access.log /var/log/apache2/access.log
 fi
 
-if [ ! -L "/var/log/apache2/error.log" ]; then
+if [ ! -e "/var/log/apache2/error.log" ]; then
   ln -s /var/log/apache2/mutillidae-error.log /var/log/apache2/error.log
 fi
 
