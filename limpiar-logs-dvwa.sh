@@ -1,29 +1,43 @@
 #!/bin/bash
 # ------------------------------------------------------------
-# Limpia los logs de Apache del contenedor DVWA.
+# Limpia los logs de Apache de contenedores
 # ------------------------------------------------------------
 
-# Obtener el ID del contenedor DVWA según docker compose
-CID=$(docker compose ps -q dvwa)
+# Obtener el ID del contenedor según docker compose
+CID_DVWA=$(docker compose ps -q dvwa)
+CID_MUTI=$(docker compose ps -q mutillidae)
 
-# Verificar que el contenedor existe
-if [ -z "$CID" ]; then
-  echo "[!] No se ha encontrado el contenedor 'dvwa'."
-  echo "    Asegúrate de estar en la carpeta del proyecto y que esté levantado."
-  exit 1
-fi
 
-echo "[*] Limpiando logs de Apache en el contenedor DVWA ($CID)..."
+echo "[*] Limpiando logs de Apache en el contenedor DVWA ($CID_DVWA)..."
+truncate -s 0 "/var/log/apache2/access.log" && echo "    [+] Vaciado /var/log/apache2/access.log"
+truncate -s 0 "/var/log/apache2/error.log" && echo "    [+] Vaciado /var/log/apache2/error.log"
+echo "[*] Logs limpiados correctamente."
 
-# Truncar (vaciar) los logs de Apache sin borrarlos
-docker exec -it "$CID" sh -c '
-  for log in /var/log/apache2/access.log /var/log/apache2/error.log; do
-    if [ -f "$log" ]; then
-      truncate -s 0 "$log" && echo "    [+] Vaciado $log"
-    else
-      echo "    [!] No existe $log"
-    fi
-  done
-'
+
+echo "[*] Limpiando logs de Apache en el contenedor Mutillidae ($CID_MUTI)..."
+truncate -s 0 "/var/log/apache2/mutillidae-access.log" && echo "    [+] Vaciado /var/log/apache2/mutillidae-access.log"
+truncate -s 0 "/var/log/apache2/mutillidae-error.log" && echo "    [+] Vaciado /var/log/apache2/mutillidae-error.log"
+echo "[*] Logs limpiados correctamente."
+
+
+echo "Logs limpiados correctamente."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 echo "Logs limpiados correctamente."
