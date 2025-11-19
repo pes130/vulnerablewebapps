@@ -81,10 +81,13 @@ services:
     networks:
       - labnet
     restart: unless-stopped
+    volumes:
+      - ./hackazon/config/db.php:/var/www/html/assets/config/db.php:ro
 #    cap_drop:
 #      - ALL
 #    security_opt:
 #      - no-new-privileges:true
+# /var/www/html/assets/config/db.php
 
   webgoat:
     image: webgoat/webgoat:latest
