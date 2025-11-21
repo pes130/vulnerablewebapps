@@ -74,22 +74,16 @@ services:
 #    security_opt:
 #      - no-new-privileges:true
 
-  hackazon:
-    image: pierrickv/hackazon:latest
-    depends_on:
-      - dvwa_db
+  hackazon: #admin / hackmesilly
+    image: ianwijaya/hackazon:latest
     ports:
       - "8083:80"
     networks:
       - labnet
     restart: unless-stopped
-    volumes:
-      - ./hackazon/config/db.php:/var/www/html/assets/config/db.php:ro
-#    cap_drop:
-#      - ALL
-#    security_opt:
-#      - no-new-privileges:true
-# /var/www/html/assets/config/db.php
+#    volumes:
+#      - ./hackazon/config/db.php:/var/www/html/assets/config/db.php:ro
+
 
   webgoat:
     image: webgoat/webgoat:latest
