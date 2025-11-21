@@ -75,19 +75,14 @@ services:
 #      - no-new-privileges:true
 
   hackazon:
-    image: pierrickv/hackazon:latest
+    image: mutzel/all-in-one-hackazon:postinstall
+    command: supervisord -n
     ports:
-      - "8083:80"
+      - "8083:80"        # Igual que antes
     networks:
       - labnet
     restart: unless-stopped
-    volumes:
-      - ./hackazon/config/db.php:/var/www/html/assets/config/db.php:ro
-#    cap_drop:
-#      - ALL
-#    security_opt:
-#      - no-new-privileges:true
-# /var/www/html/assets/config/db.php
+
 
   webgoat:
     image: webgoat/webgoat:latest
